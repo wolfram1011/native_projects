@@ -7,14 +7,18 @@ const pokeQuery = "pokemon?limit=151&offset=0";
 const firstGenPokemonPath = 'https://pokeapi.co/api/v2/type/13/';
 
 //1 Call Pokemon IDs --> 151 = 152 Calls to the API
-
+const arr = "out";
 export default function App() {
   const [firstGenPokemonDetails, setfirstGenPokemonDetails] = useState([]);
+  const [pokemonurl,setpokemonurl] = useState([]);
+  const [arr,setarr] = useState([]);
+
 
   useEffect(() => {
     const fetchFirstGenPokemons = async () => {
       const firstGenPokemonIdsResponse = await fetch(firstGenPokemonPath);
       const firstGenPokemonIdsBody = await firstGenPokemonIdsResponse.json();
+      setpokemonurl(firstGenPokemonIdsBody.pokemon);
 
       const firstGenPokemonDetails = await Promise.all(
         firstGenPokemonIdsBody.pokemon.map(async (p) => {
@@ -28,6 +32,7 @@ export default function App() {
     };
 
     fetchFirstGenPokemons();
+
   }, []);
 
   const renderPokemon = ({ item }) => {
@@ -42,11 +47,32 @@ export default function App() {
             uri: item.sprites.front_default,
           }}
         />
+        <Text>{item.pokeurl} </Text>
       </View>
     );
   };
 
+
+const change = (changePoke, addPoke) =>{
+  var num = -1;
+  changePoke.map((p)=>{
+    return arr.push(p.pokemon.url);
+  });
+
+  addPoke.map((p) => {
+    num+=1;
+    return p.pokeurl = arr[num];
+  })
+
+
+
+
+};
+
+change(pokemonurl,firstGenPokemonDetails);
+
   return (
+
     <View style={styles.container}>
       <Text style={styles.title}>Electric Pokemons</Text>
       <FlatList data={firstGenPokemonDetails} renderItem={renderPokemon} />
