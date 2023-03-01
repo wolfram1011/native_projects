@@ -47,7 +47,7 @@ export default function App() {
             uri: item.sprites.front_default,
           }}
         />
-        <Text onPress={() => Linking.openURL(item.pokeurl)}>{item.pokeurl} </Text>
+        <Text style = {styles.urlstyle} onPress={() => Linking.openURL(item.pokeurl)}>{item.pokeurl} </Text>
       </View>
     );
   };
@@ -75,7 +75,7 @@ change(pokemonurl,firstGenPokemonDetails);
 
     <View style={styles.container}>
       <Text style={styles.title}>Electric Pokemons</Text>
-      <FlatList data={firstGenPokemonDetails} renderItem={renderPokemon} />
+      <FlatList style= {{alignSelf: 'center'}}numColumns={4} data={firstGenPokemonDetails} renderItem={renderPokemon} />
       <StatusBar style="auto" />
     </View>
   );
@@ -92,8 +92,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 20,
   },
-  pokemonContainer: { backgroundColor: "lightblue", marginTop: 10 },
+  pokemonContainer: {
+     backgroundColor: "lightblue",
+     marginTop: 10,
+     marginLeft: 10,
+     width: 300,
+     alignSelf: 'center'},
   pokemonTitle: {
+    color: 'coral',
     fontSize: 32,
     alignSelf: "center",
     marginTop: 10,
@@ -102,5 +108,12 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     alignSelf: "center",
+  },
+  urlstyle: {
+    alignSelf: "Center",
+    textDecorationLine: 'underline',
+    color: 'orangered'
+
+
   },
 });
