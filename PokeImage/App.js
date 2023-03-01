@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useCallback, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import { StyleSheet, Text, View, FlatList, Image, Linking } from "react-native";
 
 const pokePath = "https://pokeapi.co/api/v2/";
 const pokeQuery = "pokemon?limit=151&offset=0";
@@ -47,7 +47,7 @@ export default function App() {
             uri: item.sprites.front_default,
           }}
         />
-        <Text>{item.pokeurl} </Text>
+        <Text onPress={() => Linking.openURL(item.pokeurl)}>{item.pokeurl} </Text>
       </View>
     );
   };
