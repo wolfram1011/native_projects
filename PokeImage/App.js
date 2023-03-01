@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 38,
     alignSelf: "center",
     marginBottom: 20,
+    color: 'coral'
   },
   pokemonContainer: {
      backgroundColor: "lightblue",
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
      width: 300,
      alignSelf: 'center'},
   pokemonTitle: {
-    color: 'coral',
+    color: 'lightcoral',
     fontSize: 32,
     alignSelf: "center",
     marginTop: 10,
