@@ -1,18 +1,29 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useCallback, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, Image, Linking } from "react-native";
+import { StyleSheet, Text, View, FlatList, Image, Linking,Alert } from "react-native";
 
 const pokePath = "https://pokeapi.co/api/v2/";
 const pokeQuery = "pokemon?limit=151&offset=0";
 const firstGenPokemonPath = 'https://pokeapi.co/api/v2/type/13/';
 
 //1 Call Pokemon IDs --> 151 = 152 Calls to the API
-const arr = "out";
+var black = "purple";
+
+
 export default function App() {
   const [firstGenPokemonDetails, setfirstGenPokemonDetails] = useState([]);
   const [pokemonurl,setpokemonurl] = useState([]);
   const [arr,setarr] = useState([]);
+  const [color,setColor] = useState('green');
+  const [active, setActive] = useState(false);
 
+
+  function hola (){
+    black = 'yellow';
+    alert(styles.testPopup.backgroundColor);
+        //{style.testPopup.backgroundColor} = 'yellow';
+
+  }
 
   useEffect(() => {
     const fetchFirstGenPokemons = async () => {
@@ -32,12 +43,13 @@ export default function App() {
     };
 
     fetchFirstGenPokemons();
+    styles;
 
   }, []);
 
   const renderPokemon = ({ item }) => {
     return (
-      <View style={styles.pokemonContainer}>
+      <View  style={styles.pokemonContainer} onClick = {() => {setActive(!active)}}>
         <Text style={styles.pokemonTitle}>
           {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
         </Text>
@@ -48,6 +60,7 @@ export default function App() {
           }}
         />
         <Text style = {styles.urlstyle} onPress={() => Linking.openURL(item.pokeurl)}>{item.pokeurl} </Text>
+        {active && <View style = {styles.popupStyle } > </View>}
       </View>
     );
   };
@@ -73,10 +86,14 @@ change(pokemonurl,firstGenPokemonDetails);
 
   return (
 
-    <View style={styles.container}>
+    <View  style={styles.container}>
       <Text style={styles.title}>Electric Pokemons</Text>
       <FlatList style= {{alignSelf: 'center'}}numColumns={4} data={firstGenPokemonDetails} renderItem={renderPokemon} />
       <StatusBar style="auto" />
+      <View style ={styles.testPopup} onClick = {() => {setActive(!active)}} >Div2 </View>
+      {active && <View style ={styles.testPopup} onClick = {()=>hola()} >
+        <Text style = {{color: 'white'}}>{styles.testPopup.backgroundColor} </Text>
+      </View>}
     </View>
   );
 }
@@ -86,6 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     marginTop: 60,
+
   },
   title: {
     fontSize: 38,
@@ -98,7 +116,10 @@ const styles = StyleSheet.create({
      marginTop: 10,
      marginLeft: 10,
      width: 300,
-     alignSelf: 'center'},
+     alignSelf: 'center',
+     //display: 'none'
+   },
+
   pokemonTitle: {
     color: 'lightcoral',
     fontSize: 32,
@@ -114,7 +135,9 @@ const styles = StyleSheet.create({
     alignSelf: "Center",
     textDecorationLine: 'underline',
     color: 'orangered'
-
-
   },
+  popupStyle: {
+    zIndex:2,position:'absolute' ,backgroundColor:'red',width: 200, height: 200
+  },
+  testPopup:{backgroundColor: black,width: 200, height: 200}
 });
