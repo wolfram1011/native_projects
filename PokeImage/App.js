@@ -4,25 +4,47 @@ import { StyleSheet, Text, View, FlatList, Image, Linking,Alert } from "react-na
 
 const pokePath = "https://pokeapi.co/api/v2/";
 const pokeQuery = "pokemon?limit=151&offset=0";
-const firstGenPokemonPath = 'https://pokeapi.co/api/v2/type/13/';
-
+const firstGenPokemonPath = 'https://pokeapi.co/api/v2/type/8/';
+// npx expo start --web
 //1 Call Pokemon IDs --> 151 = 152 Calls to the API
-var black = "purple";
+var black = "purple"
 
-
+  var appearValue = 'none';
 export default function App() {
   const [firstGenPokemonDetails, setfirstGenPokemonDetails] = useState([]);
   const [pokemonurl,setpokemonurl] = useState([]);
   const [arr,setarr] = useState([]);
   const [color,setColor] = useState('green');
   const [active, setActive] = useState(false);
-
+  const [popUp,setPopUp] = useState({backgroundColor:'red',width: 200, height: 200});
+  const [appearValue, setAppearValue] = useState('none');
+  const [nameValue, setNameValue] = useState();
+  const [moveValue, setMoveValue] = useState();
+  //.const estilo = {backgroundColor: black,width: 200, height: 200};
 
   function hola (){
-    black = 'yellow';
+    //black = 'yellow';
+    styles.testPopup.backgroundColor = 'coral';
+    const newsetUp = {...popUp, backgroundColor: 'gray'};
+    //setPopUp(newsetUp);
+    setActive(true);
+    //setColor('blue');
+    //black = color;
+    //styles.testPopup.backgroundColor = color;
+    alert(color);
     alert(styles.testPopup.backgroundColor);
-        //{style.testPopup.backgroundColor} = 'yellow';
+    //{styles.testPopup.backgroundColor} = 'yellow';
+  }
 
+  function setAppear(name,moves){
+    setNameValue(name);
+    setMoveValue(moves);
+    setAppearValue('flex');
+
+  }
+
+  function setDisappear(){
+    setAppearValue('none');
   }
 
   useEffect(() => {
@@ -43,13 +65,12 @@ export default function App() {
     };
 
     fetchFirstGenPokemons();
-    styles;
 
   }, []);
 
   const renderPokemon = ({ item }) => {
     return (
-      <View  style={styles.pokemonContainer} onClick = {() => {setActive(!active)}}>
+      <View  style={styles.pokemonContainer} onClick = {() => {setAppear(item.name, item['moves']['0']['move']['name'])}}>
         <Text style={styles.pokemonTitle}>
           {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
         </Text>
@@ -60,7 +81,6 @@ export default function App() {
           }}
         />
         <Text style = {styles.urlstyle} onPress={() => Linking.openURL(item.pokeurl)}>{item.pokeurl} </Text>
-        {active && <View style = {styles.popupStyle } > </View>}
       </View>
     );
   };
@@ -84,6 +104,7 @@ const change = (changePoke, addPoke) =>{
 
 change(pokemonurl,firstGenPokemonDetails);
 
+
   return (
 
     <View  style={styles.container}>
@@ -91,14 +112,17 @@ change(pokemonurl,firstGenPokemonDetails);
       <FlatList style= {{alignSelf: 'center'}}numColumns={4} data={firstGenPokemonDetails} renderItem={renderPokemon} />
       <StatusBar style="auto" />
       <View style ={styles.testPopup} onClick = {() => {setActive(!active)}} >Div2 </View>
-      {active && <View style ={styles.testPopup} onClick = {()=>hola()} >
+
+      <View style ={styles.testPopup} onClick = {()=>{hola()}} >
         <Text style = {{color: 'white'}}>{styles.testPopup.backgroundColor} </Text>
-      </View>}
+      </View>
+      <View style = {{ display:appearValue, zIndex:2,position:'fixed' ,backgroundColor:'lightgreen',width: 400, height: 500
+       ,marginLeft: 450, marginTop: 50}} onMouseLeave = {()=>{setDisappear()}}> {moveValue\n + ' '+nameValue} </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+var styles ={
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -137,7 +161,8 @@ const styles = StyleSheet.create({
     color: 'orangered'
   },
   popupStyle: {
-    zIndex:2,position:'absolute' ,backgroundColor:'red',width: 200, height: 200
+  display:appearValue, zIndex:2,position:'absolute' ,backgroundColor:'red',width: 200, height: 200
   },
-  testPopup:{backgroundColor: black,width: 200, height: 200}
-});
+  testPopup: {backgroundColor: black,width: 200, height: 200}
+
+}
